@@ -383,8 +383,9 @@ public class GeograpicController {
                         }
                         for (int i = 0; i < countries.size(); i++) {
                             if (countries.get(i).getName().equals(name)) {
+                                String nameC = countries.get(i).getName();
                                 countries.remove(i);
-                                ans = "The country " + i + " Was removed";
+                                ans = "The country " + nameC + " Was removed";
                                 break;
                             }
                         }
@@ -395,25 +396,37 @@ public class GeograpicController {
                             case ">":
                                 for (int i = 0; i < countries.size(); i++) {
                                     if (countries.get(i).getPopulation() > population) {
+                                        String nameC = countries.get(i).getName();
                                         countries.remove(i);
-                                        ans = "The country " + i + " Was removed";
+                                        ans = "The country " + nameC + " Was removed";
                                     }
+                                }
+                                if(ans.equals("")){
+                                    ans = "There is no countries with a population with more than " + population;
                                 }
                                 break;
                             case "<":
                                 for (int i = 0; i < countries.size(); i++) {
                                     if (countries.get(i).getPopulation() < population) {
+                                        String nameC = countries.get(i).getName();
                                         countries.remove(i);
-                                        ans = "The country " + i + " Was removed";
+                                        ans = "The country " + nameC + " Was removed";
                                     }
+                                }
+                                if(ans.equals("")){
+                                    ans = "There is no countries with a population with less than " + population;
                                 }
                                 break;
                             case "=":
                                 for (int i = 0; i < countries.size(); i++) {
                                     if (countries.get(i).getPopulation() == population) {
+                                        String nameC = countries.get(i).getName();
                                         countries.remove(i);
-                                        ans = "The country " + i + " Was removed";
+                                        ans = "The country " + nameC + " Was removed";
                                     }
+                                }
+                                if(ans.equals("")){
+                                    ans = "There is no countries with a population with that equals the " + population;
                                 }
                                 break;
                             default:
@@ -435,11 +448,15 @@ public class GeograpicController {
                                 throw new NonExistingCity();
                             } else {
                                 if (countries.get(i).getCities().get(i).getName().equals(name)) {
+                                    String nameC = countries.get(i).getCities().get(i).getName();
                                     countries.get(i).getCities().remove(i);
-                                    ans = "The city " + i + " Was removed";
+                                    ans = "The city " + nameC + " Was removed";
                                     break;
                                 }
                             }
+                        }
+                        if(ans.equals("")){
+                            ans = "There is no cities by the name " + name;
                         }
                         break;
                     case "population":
@@ -452,11 +469,15 @@ public class GeograpicController {
                                             throw new NonExistingCity();
                                         } else {
                                             if (countries.get(i).getCities().get(j).getPopulation() > population) {
+                                                String nameC = countries.get(i).getCities().get(i).getName();
                                                 countries.get(i).getCities().remove(j);
-                                                ans = "The city " + j + " Was removed";
+                                                ans = "The city " + nameC + " Was removed";
                                             }
                                         }
                                     }
+                                }
+                                if(ans.equals("")){
+                                    ans = "There is no cities with a population with more than " + population;
                                 }
                                 break;
                             case "<":
@@ -466,11 +487,15 @@ public class GeograpicController {
                                             throw new NonExistingCity();
                                         } else {
                                             if (countries.get(i).getCities().get(j).getPopulation() < population) {
+                                                String nameC = countries.get(i).getCities().get(i).getName();
                                                 countries.get(i).getCities().remove(j);
-                                                ans = "The city " + j + " Was removed";
+                                                ans = "The city " + nameC + " Was removed";
                                             }
                                         }
                                     }
+                                }
+                                if(ans.equals("")){
+                                    ans = "There is no cities with a population with less than" + population;
                                 }
                                 break;
                             case "=":
@@ -480,17 +505,49 @@ public class GeograpicController {
                                             throw new NonExistingCity();
                                         } else {
                                             if (countries.get(i).getCities().get(j).getPopulation() == population) {
+                                                String nameC = countries.get(i).getCities().get(i).getName();
                                                 countries.get(i).getCities().remove(j);
-                                                ans = "The city " + j + " Was removed";
+                                                ans = "The city " + nameC + " Was removed";
                                             }
                                         }
                                     }
+                                }
+                                if(ans.equals("")){
+                                    ans = "There is no countries with a population that equals " + population;
                                 }
                                 break;
                             default:
                                 throw new NonExistentCommand();
                         }
                         break;
+                    case "country":
+                        
+                        String cName = splitCommand[6];
+                        String cCode = "";
+                        if (cName.contains("'")) {
+                            cName = cName.replace("'", "");
+                        } else {
+                            throw new NonExistentCommand();
+                        }
+                        for (int i = 0; i < countries.size(); i++) {
+                            if(countries.get(i).getName().equals(cName)){
+                                cCode = countries.get(i).getId();
+                            }
+                        }
+
+                        for (int i = 0; i < countries.size(); i++) {
+                            for (int j = 0; j < countries.get(i).getCities().size(); j++) {
+                                if (countries.get(i).getCities().get(j).getCountryID().equals(cCode)) {
+                                    countries.get(i).getCities().remove(j);
+                                    ans = "All the cities from the country "+cName+" Where erased";
+                                }
+                            }
+                            
+                        }
+                        if(ans.equals("")){
+                            ans = "There is no cities for the country " + cName;
+                        }
+
                 }
             } else {
                 throw new NonExistentCommand();
